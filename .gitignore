@@ -53,9 +53,10 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
-
 # Visual Studio
 .vs/
+*.user
+
 
 # Experimental solution files
 *.slnx
