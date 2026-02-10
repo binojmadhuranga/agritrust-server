@@ -1,4 +1,6 @@
 using AgriTrust.API.Data;
+using AgriTrust.API.Helpers;
+using AgriTrust.API.Services.Auth;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,10 @@ builder.Services.AddDbContext<AgriTrustDbContext>(options =>
         )
     )
 );
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<JwtTokenHelper>();
+
 
 var app = builder.Build();
 
