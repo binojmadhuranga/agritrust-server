@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using AgriTrust.API.Data;
+﻿using AgriTrust.API.Data;
 using AgriTrust.API.DTOs.Auth;
-using AgriTrust.API.Models;
+using AgriTrust.API.Exceptions;
 using AgriTrust.API.Helpers;
+using AgriTrust.API.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AgriTrust.API.Services.Auth
 {
@@ -22,7 +23,7 @@ namespace AgriTrust.API.Services.Auth
         public async Task<AuthResponseDto> RegisterAsync(RegisterRequestDto request)
         {
             if (await _context.Users.AnyAsync(u => u.Email == request.Email))
-                throw new Exception("User already exists");
+                throw new AuthException("Email already registered", 409);
 
             var user = new User
             {
@@ -46,14 +47,14 @@ namespace AgriTrust.API.Services.Auth
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
             if (user == null)
-                throw new Exception("Invalid credentials");
+                throw new AuthException("Invalid email or password", 401);
 
             var result = _passwordHasher.VerifyHashedPassword(
                 user, user.PasswordHash, request.Password
             );
 
             if (result == PasswordVerificationResult.Failed)
-                throw new Exception("Invalid credentials");
+                throw new AuthException("Invalid email or password", 401);
 
             return new AuthResponseDto
             {
