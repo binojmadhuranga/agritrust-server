@@ -1,5 +1,6 @@
 using AgriTrust.API.Data;
 using AgriTrust.API.Helpers;
+using AgriTrust.API.Middlewares;
 using AgriTrust.API.Services.Auth;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 
