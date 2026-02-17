@@ -25,10 +25,10 @@ namespace AgriTrust.API.Services.Auth
             if (await _context.Users.AnyAsync(u => u.Email == request.Email))
                 throw new AuthException("Email already registered", 409);
 
-            // Allowed roles
+          
             var allowedRoles = new List<string> { "User", "Farmer", "Vendor" };
 
-            // Default role fallback
+            
             var role = "User";
 
             if (!string.IsNullOrWhiteSpace(request.Role))
