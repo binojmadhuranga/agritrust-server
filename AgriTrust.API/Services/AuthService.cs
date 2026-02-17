@@ -25,10 +25,25 @@ namespace AgriTrust.API.Services.Auth
             if (await _context.Users.AnyAsync(u => u.Email == request.Email))
                 throw new AuthException("Email already registered", 409);
 
+            // Allowed roles
+            var allowedRoles = new List<string> { "User", "Farmer", "Vendor" };
+
+            // Default role fallback
+            var role = "User";
+
+            if (!string.IsNullOrWhiteSpace(request.Role))
+            {
+                if (!allowedRoles.Contains(request.Role))
+                    throw new AuthException("Invalid role selected", 400);
+
+                role = request.Role;
+            }
+
             var user = new User
             {
                 FullName = request.FullName,
-                Email = request.Email
+                Email = request.Email,
+                Role = role
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
@@ -42,6 +57,7 @@ namespace AgriTrust.API.Services.Auth
                 ExpiresAt = DateTime.UtcNow.AddHours(2)
             };
         }
+
 
         public async Task<AuthResponseDto> LoginAsync(LoginRequestDto request)
         {
