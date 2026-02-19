@@ -75,7 +75,8 @@ namespace AgriTrust.API.Services.Auth
             return new AuthResponseDto
             {
                 Token = _jwtHelper.GenerateToken(user),
-                ExpiresAt = DateTime.UtcNow.AddHours(2)
+                ExpiresAt = DateTime.UtcNow.AddHours(2),
+                Role = user.Role
             };
         }
     }
