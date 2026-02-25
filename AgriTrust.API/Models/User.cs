@@ -12,6 +12,8 @@ namespace AgriTrust.API.Models
 
         public string Role { get; set; } = "User";
 
+        public string? WalletAddress { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
