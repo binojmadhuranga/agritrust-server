@@ -1,6 +1,6 @@
 ﻿using AgriTrust.API.DTOs.Auth;
 
-namespace AgriTrust.API.Services.Auth
+namespace AgriTrust.API.Services.Interfaces
 {
     public interface IAuthService
     {

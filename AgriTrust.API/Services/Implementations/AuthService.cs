@@ -3,10 +3,11 @@ using AgriTrust.API.DTOs.Auth;
 using AgriTrust.API.Exceptions;
 using AgriTrust.API.Helpers;
 using AgriTrust.API.Models;
+using AgriTrust.API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace AgriTrust.API.Services.Auth
+namespace AgriTrust.API.Services.Implementations
 {
     public class AuthService : IAuthService
     {

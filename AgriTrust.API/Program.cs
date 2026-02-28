@@ -1,7 +1,8 @@
 using AgriTrust.API.Data;
 using AgriTrust.API.Helpers;
 using AgriTrust.API.Middlewares;
-using AgriTrust.API.Services.Auth;
+using AgriTrust.API.Services.Implementations;
+using AgriTrust.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
