@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AgriTrust.API.DTOs.Auth;
-using AgriTrust.API.Services.Auth;
+using AgriTrust.API.Services.Interfaces;
 
 namespace AgriTrust.API.Controllers
 {
