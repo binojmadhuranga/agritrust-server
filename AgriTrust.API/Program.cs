@@ -22,7 +22,7 @@ builder.Services.AddDbContext<AgriTrustDbContext>(options =>
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<JwtTokenHelper>();
-
+builder.Services.AddScoped<IWalletService, WalletService>();
 
 builder.Services.AddCors(options =>
 {
