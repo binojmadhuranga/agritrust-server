@@ -2,6 +2,7 @@
 using AgriTrust.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AgriTrust.API.Controllers
 {
@@ -21,8 +22,19 @@ namespace AgriTrust.API.Controllers
         public async Task<IActionResult> ConnectWallet(
             [FromBody] ConnectWalletRequestDto dto)
         {
-            var userId = int.Parse(User.FindFirst("id")!.Value);
-            var role = User.FindFirst("role")!.Value;
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+                return Unauthorized("Invalid token");
+
+            int userId = int.Parse(userIdClaim.Value);
+
+
+            var roleClaim = User.FindFirst(ClaimTypes.Role);
+            if (roleClaim == null)
+                return Unauthorized("Invalid token");
+
+            string role = roleClaim.Value;
 
             await _walletService.ConnectWalletAsync(
                 userId,
