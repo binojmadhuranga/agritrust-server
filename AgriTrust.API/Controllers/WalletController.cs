@@ -44,5 +44,31 @@ namespace AgriTrust.API.Controllers
 
             return Ok(new { message = "Wallet connected successfully" });
         }
+
+
+        [HttpGet("address")]
+        public async Task<IActionResult> GetWalletAddress()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+                return Unauthorized("Invalid token");
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            var roleClaim = User.FindFirst(ClaimTypes.Role);
+            if (roleClaim == null)
+                return Unauthorized("Invalid token");
+
+            string role = roleClaim.Value;
+
+            var walletAddress = await _walletService.GetWalletAddressAsync(userId, role);
+
+            return Ok(new
+            {
+                walletAddress = walletAddress
+            });
+        }
+
+
     }
 }
