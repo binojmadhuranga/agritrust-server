@@ -33,5 +33,21 @@ namespace AgriTrust.API.Services.Implementations
             user.WalletAddress = walletAddress;
             await _context.SaveChangesAsync();
         }
+
+
+        public async Task<string> GetWalletAddressAsync(int userId, string role)
+        {
+            if (role != "Farmer")
+                throw new Exception("Only farmers can access wallet details");
+
+            var user = await _context.Users.FindAsync(userId)
+                ?? throw new Exception("User not found");
+
+            if (string.IsNullOrEmpty(user.WalletAddress))
+                throw new Exception("Wallet not connected");
+
+            return user.WalletAddress;
+        }
+
     }
 }
