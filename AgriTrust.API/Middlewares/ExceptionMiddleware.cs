@@ -21,29 +21,54 @@ namespace AgriTrust.API.Middlewares
             {
                 await _next(context);
             }
+
             catch (AuthException ex)
             {
+                await HandleException(context, ex.StatusCode, ex.Message);
                 _logger.LogWarning(ex, "Authentication exception occurred");
-                context.Response.StatusCode = ex.StatusCode;
-                context.Response.ContentType = "application/json";
-
-                var response = new
-                {
-                    message = ex.Message
-                };
-
-                await context.Response.WriteAsync(JsonSerializer.Serialize(response));
             }
+
+            catch (ForbiddenException ex)
+            {
+                await HandleException(context, ex.StatusCode, ex.Message);
+                _logger.LogWarning(ex, "Forbidden exception occurred");
+            }
+
+            catch (NotFoundException ex)
+            {
+                await HandleException(context, ex.StatusCode, ex.Message);
+                _logger.LogWarning(ex, "Resource not found");
+            }
+
+            catch (ConflictException ex)
+            {
+                await HandleException(context, ex.StatusCode, ex.Message);
+                _logger.LogWarning(ex, "Conflict occurred");
+            }
+
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unhandled exception occurred");
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                context.Response.ContentType = "application/json";
+                _logger.LogError(ex, "Unhandled exception occurred");
 
-                await context.Response.WriteAsync(
-                    JsonSerializer.Serialize(new { message = "Something went wrong" })
+                await HandleException(
+                    context,
+                    (int)HttpStatusCode.InternalServerError,
+                    "Something went wrong"
                 );
             }
+        }
+
+        private static async Task HandleException(HttpContext context, int statusCode, string message)
+        {
+            context.Response.StatusCode = statusCode;
+            context.Response.ContentType = "application/json";
+
+            var response = new
+            {
+                message = message
+            };
+
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
     }
 }
