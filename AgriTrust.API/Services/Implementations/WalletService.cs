@@ -49,6 +49,22 @@ namespace AgriTrust.API.Services.Implementations
 
             return user.WalletAddress;
         }
+        
+        public async Task DisconnectWalletAsync(int userId, string role)
+        {
+            if (role != "Farmer")
+                throw new ForbiddenException("Only farmers can disconnect a wallet");
+
+            var user = await _context.Users.FindAsync(userId)
+                       ?? throw new NotFoundException("User not found");
+
+            if (string.IsNullOrEmpty(user.WalletAddress))
+                throw new ConflictException("Wallet is not connected");
+
+            user.WalletAddress = null;
+
+            await _context.SaveChangesAsync();
+        }
 
     }
 }

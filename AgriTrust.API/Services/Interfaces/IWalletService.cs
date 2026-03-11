@@ -4,5 +4,6 @@
     {
         Task ConnectWalletAsync(int userId, string role, string walletAddress);
         Task<string> GetWalletAddressAsync(int userId, string role);
+        Task DisconnectWalletAsync(int userId, string role);
     }
 }
