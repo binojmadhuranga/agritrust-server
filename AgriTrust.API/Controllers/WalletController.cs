@@ -68,6 +68,26 @@ namespace AgriTrust.API.Controllers
                 walletAddress = walletAddress
             });
         }
+        
+        [HttpDelete("disconnect")]
+        public async Task<IActionResult> DisconnectWallet()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+                return Unauthorized("Invalid token");
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            var roleClaim = User.FindFirst(ClaimTypes.Role);
+            if (roleClaim == null)
+                return Unauthorized("Invalid token");
+
+            string role = roleClaim.Value;
+
+            await _walletService.DisconnectWalletAsync(userId, role);
+
+            return Ok(new { message = "Wallet disconnected successfully" });
+        }
 
 
     }
