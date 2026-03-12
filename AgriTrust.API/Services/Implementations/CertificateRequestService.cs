@@ -15,16 +15,23 @@ namespace AgriTrust.API.Services.Implementations
             _context = context;
         }
 
-        public async Task<CertificateRequestResponseDto> CreateRequestAsync(CreateCertificateRequestDto dto)
+        
+        public async Task<CertificateRequestResponseDto> CreateRequestAsync(int farmerId)
         {
-            var farmer = await _context.Users.FindAsync(dto.FarmerId);
+            var farmer = await _context.Users.FindAsync(farmerId);
 
             if (farmer == null || farmer.Role != "Farmer")
                 throw new Exception("Farmer not found");
 
+            var existingPending = await _context.CertificateRequests
+                .FirstOrDefaultAsync(r => r.FarmerId == farmerId && r.Status == "Pending");
+
+            if (existingPending != null)
+                throw new Exception("You already have a pending request");
+
             var request = new CertificateRequest
             {
-                FarmerId = dto.FarmerId,
+                FarmerId = farmerId,
                 Status = "Pending"
             };
 
@@ -41,6 +48,7 @@ namespace AgriTrust.API.Services.Implementations
                 RequestedAt = request.RequestedAt
             };
         }
+        
 
         public async Task<List<CertificateRequestResponseDto>> GetAllRequestsAsync()
         {
