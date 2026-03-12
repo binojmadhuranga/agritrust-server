@@ -11,5 +11,7 @@ namespace AgriTrust.API.Data
         }
 
         public DbSet<User> Users => Set<User>();
+        
+        public DbSet<CertificateRequest> CertificateRequests { get; set; }
     }
 }
