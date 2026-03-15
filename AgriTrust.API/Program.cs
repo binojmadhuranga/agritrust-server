@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AgriTrust.API.Data.Seed;
+using AgriTrust.API.Models;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +30,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<JwtTokenHelper>();
 builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<ICertificateRequestService, CertificateRequestService>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -75,5 +80,15 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<AgriTrustDbContext>();
+    var passwordHasher = services.GetRequiredService<IPasswordHasher<User>>();
+
+    await UserSeeder.SeedVendorAsync(context, passwordHasher);
+}
 
 app.Run();

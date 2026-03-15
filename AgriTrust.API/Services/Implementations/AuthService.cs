@@ -13,12 +13,13 @@ namespace AgriTrust.API.Services.Implementations
     {
         private readonly AgriTrustDbContext _context;
         private readonly JwtTokenHelper _jwtHelper;
-        private readonly PasswordHasher<User> _passwordHasher = new();
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public AuthService(AgriTrustDbContext context, JwtTokenHelper jwtHelper)
+        public AuthService(AgriTrustDbContext context, JwtTokenHelper jwtHelper, IPasswordHasher<User> passwordHasher)
         {
             _context = context;
             _jwtHelper = jwtHelper;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterRequestDto request)
