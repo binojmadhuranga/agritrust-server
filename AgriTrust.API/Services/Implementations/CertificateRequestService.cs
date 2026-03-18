@@ -1,5 +1,7 @@
 using AgriTrust.API.Data;
 using AgriTrust.API.DTOs.CertificateRequest;
+using AgriTrust.API.Enums;
+using AgriTrust.API.Exceptions;
 using AgriTrust.API.Models;
 using AgriTrust.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -15,24 +17,25 @@ namespace AgriTrust.API.Services.Implementations
             _context = context;
         }
 
-        
         public async Task<CertificateRequestResponseDto> CreateRequestAsync(int farmerId)
         {
             var farmer = await _context.Users.FindAsync(farmerId);
 
             if (farmer == null || farmer.Role != "Farmer")
-                throw new Exception("Farmer not found");
+                throw new NotFoundException("Farmer not found");
 
             var existingPending = await _context.CertificateRequests
-                .FirstOrDefaultAsync(r => r.FarmerId == farmerId && r.Status == "Pending");
+                .FirstOrDefaultAsync(r =>
+                    r.FarmerId == farmerId &&
+                    r.Status == CertificateRequestStatus.Pending);
 
             if (existingPending != null)
-                throw new Exception("You already have a pending request");
+                throw new ConflictException("You already have a pending request");
 
             var request = new CertificateRequest
             {
                 FarmerId = farmerId,
-                Status = "Pending"
+                Status = CertificateRequestStatus.Pending
             };
 
             _context.CertificateRequests.Add(request);
@@ -44,11 +47,10 @@ namespace AgriTrust.API.Services.Implementations
                 FarmerId = farmer.Id,
                 FarmerName = farmer.FullName,
                 WalletAddress = farmer.WalletAddress,
-                Status = request.Status,
+                Status = request.Status.ToString(),
                 RequestedAt = request.RequestedAt
             };
         }
-        
 
         public async Task<List<CertificateRequestResponseDto>> GetAllRequestsAsync()
         {
@@ -60,20 +62,20 @@ namespace AgriTrust.API.Services.Implementations
                     FarmerId = r.FarmerId,
                     FarmerName = r.Farmer.FullName,
                     WalletAddress = r.Farmer.WalletAddress,
-                    Status = r.Status,
+                    Status = r.Status.ToString(),
                     RequestedAt = r.RequestedAt
                 })
                 .ToListAsync();
         }
 
-        public async Task<CertificateRequestResponseDto> UpdateStatusAsync(int requestId, string status)
+        public async Task<CertificateRequestResponseDto> UpdateStatusAsync(int requestId, CertificateRequestStatus status)
         {
             var request = await _context.CertificateRequests
                 .Include(r => r.Farmer)
                 .FirstOrDefaultAsync(r => r.Id == requestId);
 
             if (request == null)
-                throw new Exception("Request not found");
+                throw new NotFoundException("Request not found");
 
             request.Status = status;
 
@@ -85,7 +87,7 @@ namespace AgriTrust.API.Services.Implementations
                 FarmerId = request.FarmerId,
                 FarmerName = request.Farmer.FullName,
                 WalletAddress = request.Farmer.WalletAddress,
-                Status = request.Status,
+                Status = request.Status.ToString(),
                 RequestedAt = request.RequestedAt
             };
         }
