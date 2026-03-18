@@ -41,7 +41,7 @@ namespace AgriTrust.API.Controllers
         }
 
         [HttpPut("{id}/status")]
-        public async Task<IActionResult> UpdateStatus(int id, UpdateCertificateRequestStatusDto dto)
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateCertificateRequestStatusDto dto)
         {
             var result = await _service.UpdateStatusAsync(id, dto.Status);
             return Ok(result);
