@@ -1,7 +1,9 @@
+using AgriTrust.API.Enums;
+
 namespace AgriTrust.API.DTOs.CertificateRequest
 {
     public class UpdateCertificateRequestStatusDto
     {
-        public string Status { get; set; } = string.Empty;
+        public CertificateRequestStatus Status { get; set; }
     }
 }

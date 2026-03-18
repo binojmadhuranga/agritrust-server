@@ -1,3 +1,5 @@
+using AgriTrust.API.Enums;
+
 namespace AgriTrust.API.Models
 {
     public class CertificateRequest
@@ -8,7 +10,7 @@ namespace AgriTrust.API.Models
 
         public User Farmer { get; set; } = null!;
 
-        public string Status { get; set; } = "Pending";
+        public CertificateRequestStatus Status { get; set; } = CertificateRequestStatus.Pending;
 
         public DateTime RequestedAt { get; set; } = DateTime.UtcNow;
     }
