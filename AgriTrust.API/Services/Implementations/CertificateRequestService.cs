@@ -1,6 +1,7 @@
 using AgriTrust.API.Data;
 using AgriTrust.API.DTOs.CertificateRequest;
 using AgriTrust.API.Enums;
+using AgriTrust.API.Exceptions;
 using AgriTrust.API.Models;
 using AgriTrust.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ namespace AgriTrust.API.Services.Implementations
             var farmer = await _context.Users.FindAsync(farmerId);
 
             if (farmer == null || farmer.Role != "Farmer")
-                throw new Exception("Farmer not found");
+                throw new NotFoundException("Farmer not found");
 
             var existingPending = await _context.CertificateRequests
                 .FirstOrDefaultAsync(r =>
@@ -29,7 +30,7 @@ namespace AgriTrust.API.Services.Implementations
                     r.Status == CertificateRequestStatus.Pending);
 
             if (existingPending != null)
-                throw new Exception("You already have a pending request");
+                throw new ConflictException("You already have a pending request");
 
             var request = new CertificateRequest
             {
@@ -74,7 +75,7 @@ namespace AgriTrust.API.Services.Implementations
                 .FirstOrDefaultAsync(r => r.Id == requestId);
 
             if (request == null)
-                throw new Exception("Request not found");
+                throw new NotFoundException("Request not found");
 
             request.Status = status;
 
