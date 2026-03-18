@@ -9,9 +9,16 @@ namespace AgriTrust.API.Data
             : base(options)
         {
         }
-
         public DbSet<User> Users => Set<User>();
-        
         public DbSet<CertificateRequest> CertificateRequests { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<CertificateRequest>()
+                .Property(c => c.Status)
+                .HasConversion<string>();
+        }
+        
     }
 }
