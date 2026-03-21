@@ -1,7 +1,7 @@
 using AgriTrust.API.Enums;
 
-namespace AgriTrust.API.Models
-{
+namespace AgriTrust.API.Models;
+
     public class CertificateRequest
     {
         public int Id { get; set; }
@@ -14,4 +14,3 @@ namespace AgriTrust.API.Models
 
         public DateTime RequestedAt { get; set; } = DateTime.UtcNow;
     }
-}

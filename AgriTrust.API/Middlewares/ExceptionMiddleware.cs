@@ -2,8 +2,8 @@
 using System.Net;
 using System.Text.Json;
 
-namespace AgriTrust.API.Middlewares
-{
+namespace AgriTrust.API.Middlewares;
+
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
@@ -71,4 +71,3 @@ namespace AgriTrust.API.Middlewares
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
     }
-}

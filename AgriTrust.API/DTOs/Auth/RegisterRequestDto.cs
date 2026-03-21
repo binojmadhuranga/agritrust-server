@@ -1,5 +1,5 @@
-﻿namespace AgriTrust.API.DTOs.Auth
-{
+﻿namespace AgriTrust.API.DTOs.Auth;
+
     public class RegisterRequestDto
     {
         public string FullName { get; set; } = string.Empty;
@@ -8,4 +8,4 @@
         public string Role { get; set; } = "User";
 
     }
-}
+

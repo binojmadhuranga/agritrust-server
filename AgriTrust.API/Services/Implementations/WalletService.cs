@@ -3,8 +3,8 @@ using AgriTrust.API.Exceptions;
 using AgriTrust.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace AgriTrust.API.Services.Implementations
-{
+namespace AgriTrust.API.Services.Implementations;
+
     public class WalletService : IWalletService
     {
         private readonly AgriTrustDbContext _context;
@@ -67,4 +67,3 @@ namespace AgriTrust.API.Services.Implementations
         }
 
     }
-}
