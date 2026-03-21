@@ -11,6 +11,7 @@ namespace AgriTrust.API.Data
         }
         public DbSet<User> Users => Set<User>();
         public DbSet<CertificateRequest> CertificateRequests { get; set; }
+        public DbSet<Certificate> Certificates => Set<Certificate>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

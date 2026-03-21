@@ -1,5 +1,5 @@
-﻿namespace AgriTrust.API.Exceptions
-{
+﻿namespace AgriTrust.API.Exceptions;
+
     public class AuthException : Exception
     {
         public int StatusCode { get; }
@@ -9,4 +9,4 @@
             StatusCode = statusCode;
         }
     }
-}
+

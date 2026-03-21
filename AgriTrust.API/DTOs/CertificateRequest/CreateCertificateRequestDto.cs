@@ -1,7 +1,6 @@
-namespace AgriTrust.API.DTOs.CertificateRequest
-{
+namespace AgriTrust.API.DTOs.CertificateRequest;
+
     public class CreateCertificateRequestDto
     {
         
     }
-}

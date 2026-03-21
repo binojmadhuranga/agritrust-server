@@ -5,16 +5,19 @@ using AgriTrust.API.Exceptions;
 using AgriTrust.API.Models;
 using AgriTrust.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using AgriTrust.API.Helpers;
 
-namespace AgriTrust.API.Services.Implementations
-{
+namespace AgriTrust.API.Services.Implementations;
+
     public class CertificateRequestService : ICertificateRequestService
     {
         private readonly AgriTrustDbContext _context;
+        private readonly IBlockchainService _blockchainService;
 
-        public CertificateRequestService(AgriTrustDbContext context)
+        public CertificateRequestService(AgriTrustDbContext context, IBlockchainService blockchainService )
         {
             _context = context;
+            _blockchainService = blockchainService;
         }
 
         public async Task<CertificateRequestResponseDto> CreateRequestAsync(int farmerId)
@@ -79,6 +82,31 @@ namespace AgriTrust.API.Services.Implementations
 
             request.Status = status;
 
+            if (status == CertificateRequestStatus.Approved)
+            {
+                var certificateNumber = $"CERT-{DateTime.UtcNow.Ticks}";
+
+                var hashInput = $"{certificateNumber}-{request.FarmerId}-{DateTime.UtcNow}";
+
+                var hash = HashHelper.GenerateHash(hashInput);
+
+                var certificate = new Certificate
+                {
+                    CertificateNumber = certificateNumber,
+                    FarmerId = request.FarmerId,
+                    IssuedAt = DateTime.UtcNow,
+                    ExpiryDate = DateTime.UtcNow.AddYears(1),
+                    Hash = hash
+                };
+
+                _context.Set<Certificate>().Add(certificate);
+
+                await _blockchainService.StoreCertificateHashAsync(
+                    certificate.CertificateNumber,
+                    certificate.Hash
+                );
+            }
+
             await _context.SaveChangesAsync();
 
             return new CertificateRequestResponseDto
@@ -92,4 +120,3 @@ namespace AgriTrust.API.Services.Implementations
             };
         }
     }
-}

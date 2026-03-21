@@ -1,5 +1,5 @@
-namespace AgriTrust.API.DTOs.CertificateRequest
-{
+namespace AgriTrust.API.DTOs.CertificateRequest;
+
     public class CertificateRequestResponseDto
     {
         public int Id { get; set; }
@@ -14,4 +14,3 @@ namespace AgriTrust.API.DTOs.CertificateRequest
 
         public DateTime RequestedAt { get; set; }
     }
-}

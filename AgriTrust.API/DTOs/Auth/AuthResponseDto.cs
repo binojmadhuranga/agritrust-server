@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AgriTrust.API.DTOs.Auth
-{
+namespace AgriTrust.API.DTOs.Auth;
+
     public class AuthResponseDto
     {
         public string Token { get; set; } = string.Empty;
@@ -11,4 +11,4 @@ namespace AgriTrust.API.DTOs.Auth
 
         public DateTime ExpiresAt { get; set; }
     }
-}
+
