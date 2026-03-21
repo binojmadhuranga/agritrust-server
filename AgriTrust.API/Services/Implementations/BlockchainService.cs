@@ -1,5 +1,5 @@
-namespace AgriTrust.API.Services.Implementations;
 using AgriTrust.API.Services.Interfaces;
+namespace AgriTrust.API.Services.Implementations;
 
 public class BlockchainService : IBlockchainService
 {

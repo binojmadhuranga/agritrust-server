@@ -4,8 +4,8 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using AgriTrust.API.Models;
 
-namespace AgriTrust.API.Helpers
-{
+namespace AgriTrust.API.Helpers;
+
     public class JwtTokenHelper
     {
         private readonly IConfiguration _config;
@@ -42,4 +42,4 @@ namespace AgriTrust.API.Helpers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
-}
+

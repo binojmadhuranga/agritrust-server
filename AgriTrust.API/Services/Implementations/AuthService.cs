@@ -7,8 +7,8 @@ using AgriTrust.API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace AgriTrust.API.Services.Implementations
-{
+namespace AgriTrust.API.Services.Implementations;
+
     public class AuthService : IAuthService
     {
         private readonly AgriTrustDbContext _context;
@@ -82,4 +82,4 @@ namespace AgriTrust.API.Services.Implementations
             };
         }
     }
-}
+

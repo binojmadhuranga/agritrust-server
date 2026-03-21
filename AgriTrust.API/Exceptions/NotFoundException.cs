@@ -1,7 +1,7 @@
 ﻿using System.Net;
 
-namespace AgriTrust.API.Exceptions
-{
+namespace AgriTrust.API.Exceptions;
+
     public class NotFoundException : Exception
     {
         public int StatusCode { get; }
@@ -12,4 +12,3 @@ namespace AgriTrust.API.Exceptions
             StatusCode = (int)HttpStatusCode.NotFound;
         }
     }
-}

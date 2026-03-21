@@ -6,8 +6,8 @@ using AgriTrust.API.Models;
 using AgriTrust.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace AgriTrust.API.Services.Implementations
-{
+namespace AgriTrust.API.Services.Implementations;
+
     public class CertificateRequestService : ICertificateRequestService
     {
         private readonly AgriTrustDbContext _context;
@@ -92,4 +92,3 @@ namespace AgriTrust.API.Services.Implementations
             };
         }
     }
-}

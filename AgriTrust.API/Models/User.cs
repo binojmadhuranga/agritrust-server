@@ -1,5 +1,5 @@
-namespace AgriTrust.API.Models
-{
+namespace AgriTrust.API.Models;
+
     public class User
     {
         public int Id { get; set; }
@@ -16,4 +16,4 @@ namespace AgriTrust.API.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
-}
+
