@@ -64,3 +64,7 @@ nunit-*.xml
 
 # Experimental solution files
 *.slnx
+
+# Local app configuration
+appsettings.json
+appsettion.json
