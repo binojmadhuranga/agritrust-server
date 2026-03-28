@@ -13,4 +13,8 @@ namespace AgriTrust.API.DTOs.CertificateRequest;
         public string Status { get; set; } = string.Empty;
 
         public DateTime RequestedAt { get; set; }
+        
+        public string? CertificateNumber { get; set; }
+        
+        public string? Hash { get; set; }
     }
