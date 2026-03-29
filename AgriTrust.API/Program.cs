@@ -37,7 +37,7 @@ builder.Services.AddScoped<JwtTokenHelper>();
 builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<ICertificateRequestService, CertificateRequestService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-builder.Services.AddScoped<IBlockchainService, BlockchainService>();
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
