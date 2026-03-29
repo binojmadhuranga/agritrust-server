@@ -49,6 +49,9 @@ namespace AgriTrust.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FarmerId")
+                        .IsUnique();
+
                     b.ToTable("Certificates");
                 });
 
@@ -112,6 +115,17 @@ namespace AgriTrust.API.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("AgriTrust.API.Models.Certificate", b =>
+                {
+                    b.HasOne("AgriTrust.API.Models.User", "Farmer")
+                        .WithOne("Certificate")
+                        .HasForeignKey("AgriTrust.API.Models.Certificate", "FarmerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Farmer");
+                });
+
             modelBuilder.Entity("AgriTrust.API.Models.CertificateRequest", b =>
                 {
                     b.HasOne("AgriTrust.API.Models.User", "Farmer")
@@ -121,6 +135,11 @@ namespace AgriTrust.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Farmer");
+                });
+
+            modelBuilder.Entity("AgriTrust.API.Models.User", b =>
+                {
+                    b.Navigation("Certificate");
                 });
 #pragma warning restore 612, 618
         }
