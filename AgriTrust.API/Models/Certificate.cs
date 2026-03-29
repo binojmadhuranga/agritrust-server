@@ -13,4 +13,7 @@ public class Certificate
     public DateTime ExpiryDate { get; set; }
 
     public string Hash { get; set; }
+    
+    public User Farmer { get; set; }
+
 }

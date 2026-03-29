@@ -80,11 +80,15 @@ public class CertificateRequestService : ICertificateRequestService
 
         request.Status = status;
 
+        string? certificateNumber = null;
+        string? hash = null;
+
         if (status == CertificateRequestStatus.Approved)
         {
-            var certificateNumber = $"CERT-{DateTime.UtcNow.Ticks}";
+            certificateNumber = $"CERT-{DateTime.UtcNow.Ticks}";
+
             var hashInput = $"{certificateNumber}-{request.FarmerId}-{DateTime.UtcNow}";
-            var hash = HashHelper.GenerateHash(hashInput);
+            hash = HashHelper.GenerateHash(hashInput);
 
             var certificate = new Certificate
             {
@@ -107,7 +111,9 @@ public class CertificateRequestService : ICertificateRequestService
             FarmerName = request.Farmer.FullName,
             WalletAddress = request.Farmer.WalletAddress,
             Status = request.Status.ToString(),
-            RequestedAt = request.RequestedAt
+            RequestedAt = request.RequestedAt,
+            CertificateNumber = certificateNumber,
+            Hash = hash
         };
     }
 }
