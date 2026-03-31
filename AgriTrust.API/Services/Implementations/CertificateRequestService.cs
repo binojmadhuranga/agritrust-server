@@ -85,21 +85,30 @@ public class CertificateRequestService : ICertificateRequestService
 
         if (status == CertificateRequestStatus.Approved)
         {
+            var existingCertificate = await _context.Certificates
+                .FirstOrDefaultAsync(c => c.FarmerId == request.FarmerId);
+
+            if (existingCertificate != null)
+                throw new ConflictException("Farmer already has a certificate");
+
+            var issuedAt = DateTime.UtcNow;
+            var expiryDate = issuedAt.AddYears(1);
+
             certificateNumber = $"CERT-{DateTime.UtcNow.Ticks}";
 
-            var hashInput = $"{certificateNumber}-{request.FarmerId}-{DateTime.UtcNow}";
+            var hashInput = $"{certificateNumber}|{request.FarmerId}|{issuedAt:O}|{expiryDate:O}";
             hash = HashHelper.GenerateHash(hashInput);
 
             var certificate = new Certificate
             {
                 CertificateNumber = certificateNumber,
                 FarmerId = request.FarmerId,
-                IssuedAt = DateTime.UtcNow,
-                ExpiryDate = DateTime.UtcNow.AddYears(1),
+                IssuedAt = issuedAt,
+                ExpiryDate = expiryDate,
                 Hash = hash
             };
 
-            _context.Set<Certificate>().Add(certificate);
+            _context.Certificates.Add(certificate);
         }
 
         await _context.SaveChangesAsync();
