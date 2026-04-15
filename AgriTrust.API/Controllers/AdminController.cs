@@ -1,10 +1,12 @@
 using AgriTrust.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgriTrust.API.Controllers;
 
 [ApiController]
 [Route("api/admin")]
+[Authorize(Roles = "Admin")]
 public class AdminController : ControllerBase
 {
     private readonly IAdminService _adminService;
