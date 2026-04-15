@@ -95,6 +95,7 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<AgriTrustDbContext>();
     var passwordHasher = services.GetRequiredService<IPasswordHasher<User>>();
 
+    await AdminSeeder.SeedAdminAsync(context, passwordHasher);
     await UserSeeder.SeedVendorAsync(context, passwordHasher);
 }
 
